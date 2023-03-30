@@ -1,0 +1,182 @@
+:root {
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+    font-size: 16px;
+
+    color-scheme: light dark;
+    color: rgba(255, 255, 255, 0.87);
+    background-color: #242424;
+
+    --board-bg: #403f3f;
+    --board-box-bg: #393a3e;
+    --board-border-color: #45463c;
+    --board-box-shadow: #7c7c73;
+    --box-bg-color: #535bf2;
+    --box-size: 3rem;
+    --box-gap-size: 0.1rem;
+}
+
+@mixin box-style {
+    width: var(--box-size);
+    height: var(--box-size);
+    border-radius: 0.5rem;
+}
+
+@mixin box-style-with-shadow {
+    @include box-style;
+    box-shadow: 0px 0px 13px 4px inset #00000061;
+}
+
+@mixin rotate($deg, $left: 0, $top: 0) {
+    transform: translate(#{$left}, #{$top}) rotate(#{$deg}deg);
+}
+
+.hide {
+    visibility: hidden;
+}
+
+body {
+    margin: 0;
+    display: flex;
+    place-items: center;
+    min-width: 320px;
+    min-height: 100vh;
+}
+
+#app_version {
+    position: fixed;
+    bottom: 0.5rem;
+    left: 0.5rem;
+}
+
+#app {
+    position: relative;
+    max-width: 1280px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+#board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: var(--box-gap-size);
+    overflow: hidden;
+    border: 0.2rem solid var(--board-border-color);
+    box-shadow: 0 0 0.5rem 0 var(--board-box-shadow);
+    background-color: var(--board-bg);
+
+    > * {
+        background-color: var(--board-box-bg);
+        @include box-style;
+    }
+}
+
+#shapes_wrapper {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+}
+
+#game_over_wrapper {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #1c07076e;
+}
+
+#hints_wrapper {
+    position: absolute;
+    top: 100%;
+}
+
+.opacity-0-1 {
+    opacity: 0.1;
+}
+
+.shape {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: grid;
+    grid-gap: var(--box-gap-size);
+    transform-style: preserve-3d;
+    transform-origin: center;
+
+    > * {
+        position: relative;
+        @include box-style-with-shadow;
+    }
+}
+
+.shape-part-hide {
+    visibility: hidden;
+}
+
+.shape-part-show {
+    background-color: var(--box-bg-color);
+}
+
+.free-box {
+    position: absolute;
+    @include box-style-with-shadow;
+    background-color: var(--box-bg-color);
+}
+
+.shape.animate,
+.free-box.animate {
+    transition: transform 0.2s, translate 0.7s;
+}
+
+/** **/
+.shape-3-by-2 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.shape-2-by-2 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+/** **/
+.shape-1-by-1.rotate-90,
+.shape-2-by-2.rotate-90 {
+    @include rotate(90);
+}
+
+.shape-3-by-2.rotate-90 {
+    @include rotate(90, -1.57rem, 1.57rem);
+}
+.shape-1-by-3.rotate-90 {
+    @include rotate(90, 3.09rem, -3.13rem);
+}
+
+.shape-1-by-1.rotate-180,
+.shape-1-by-3.rotate-180,
+.shape-2-by-2.rotate-180 {
+    @include rotate(180);
+}
+.shape-3-by-2.rotate-180 {
+    @include rotate(180, 0.03rem);
+}
+
+.shape-1-by-1.rotate-270,
+.shape-2-by-2.rotate-270 {
+    @include rotate(270);
+}
+
+.shape-3-by-2.rotate-270 {
+    @include rotate(270, -1.57rem, 1.57rem);
+}
+
+.shape-1-by-3.rotate-270 {
+    @include rotate(270, 3.09rem, -3.13rem);
+}
+
+.shape-1-by-1.rotate-360,
+.shape-1-by-3.rotate-360,
+.shape-2-by-2.rotate-360,
+.shape-3-by-2.rotate-360 {
+    @include rotate(360);
+}
